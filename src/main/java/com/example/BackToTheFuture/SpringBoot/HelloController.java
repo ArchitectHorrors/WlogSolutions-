@@ -1,25 +1,41 @@
-package SpringBoot;
+package com.example.BackToTheFuture.SpringBoot;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.testng.annotations.Test;
-
+import com.example.BackToTheFuture.SpringBoot.About.AboutController;
+import com.example.BackToTheFuture.SpringBoot.UserControler.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RestController
 public class HelloController {
 
-    @Autowired
-    private TestRestTemplate template;
+    private AboutController aboutControler;
+    private UserController userControler;
 
-    @Test
-    public void getHello() throws Exception {
-        ResponseEntity<String> response = template.getForEntity("/", String.class);
-        assertThat(response.getBody()).isEqualTo("Witam");
+    @Autowired
+    public HelloController(AboutController aboutControler, UserController userControler){
+        this.aboutControler = aboutControler;
+        this.userControler = userControler;
+    }
+
+    @GetMapping("/about")
+    public String index(){
+        return aboutControler.AboutUs();
+    }
+
+    @GetMapping("/user")
+    public String user(){
+        return userControler.userIndex();
+    }
+
+    @GetMapping("/hello")
+    public String hello(@RequestParam(name = "name", required = false, defaultValue = " ,there")
+                                String name, Model model){
+        model.addAttribute(name);
+
+        return "Hello, "+ name;
     }
 }
