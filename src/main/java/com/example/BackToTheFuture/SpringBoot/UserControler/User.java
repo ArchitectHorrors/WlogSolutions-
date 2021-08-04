@@ -26,6 +26,7 @@ public class User {
     public String getSurname(){
         return surname;
     }
+    public String getUrlImage(){return  UrlImage;}
 
     public void setSurname(String surname) {
         this.surname = surname;

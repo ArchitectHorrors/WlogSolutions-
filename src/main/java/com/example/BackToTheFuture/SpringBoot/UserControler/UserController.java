@@ -36,10 +36,21 @@ public class UserController {
         return user;
     }
 
+
     @GetMapping(value = "/print-all", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String printUsers(Model model){
         model.addAllAttributes(users);
         return "user-list";
     }
+
+    @ResponseBody
+    @PostMapping
+            public User saveUser(@RequestBody() User user){
+            User newUser =  new User(user.getName(), user.getSurname(), user.getUrlImage());
+            users.add(user);
+            return user;
+            }
+
+
 }
