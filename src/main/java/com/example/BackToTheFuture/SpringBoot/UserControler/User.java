@@ -2,8 +2,14 @@ package com.example.BackToTheFuture.SpringBoot.UserControler;
 
 public class User {
     private String name;
+    private String surname;
+    private String UrlImage;
 
-    public User(String name){
+    public void setUrlImage(String urlImage) {
+        UrlImage = urlImage;
+    }
+
+    public User(String s, String surname, String name){
         this.name = name;
     }
     @Override
@@ -14,8 +20,15 @@ public class User {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
+    public void setName(String name){
         this.name = name;
     }
+    public String getSurname(){
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
 }

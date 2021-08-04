@@ -3,39 +3,48 @@ package com.example.BackToTheFuture.SpringBoot;
 import com.example.BackToTheFuture.SpringBoot.About.AboutController;
 import com.example.BackToTheFuture.SpringBoot.UserControler.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+@Controller
 public class HelloController {
-
-    private AboutController aboutControler;
-    private UserController userControler;
+    private final AboutController aboutController;
+    private final UserController userController;
 
     @Autowired
-    public HelloController(AboutController aboutControler, UserController userControler){
-        this.aboutControler = aboutControler;
-        this.userControler = userControler;
+    public HelloController(AboutController aboutController, UserController userController){
+        this.aboutController = aboutController;
+        this.userController = userController;
     }
 
-    @GetMapping("/about")
-    public String index(){
-        return aboutControler.AboutUs();
-    }
-
-    @GetMapping("/user")
-    public String user(){
-        return userControler.userIndex();
+    @GetMapping("/")
+    @ResponseBody
+    public ModelAndView index(ModelAndView view){
+        view.setViewName("index");
+        return view;
     }
 
     @GetMapping("/hello")
-    public String hello(@RequestParam(name = "name", required = false, defaultValue = " ,there")
-                                String name, Model model){
+    @ResponseBody
+    public ModelAndView hello(@RequestParam(name = "name", required = false, defaultValue = " there!")
+                        String name, Model model){
+        ModelAndView view = new ModelAndView();
         model.addAttribute(name);
+        view.setViewName("index");
+        return view;
+    }
 
-        return "Hello, "+ name;
+    @GetMapping("/about")
+    @ResponseBody
+    public String about(){
+        return aboutController.AboutUs();
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    public ModelAndView userIndex(ModelAndView view){
+        return userController.userIndex(view);
     }
 }
